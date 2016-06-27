@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eqshen.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.eqshen.model.User" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="age" property="age" jdbcType="TINYINT" />
+    <result column="usertype" property="usertype" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="UserGenResultMap" type="com.eqshen.bean.UserGen" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="TINYINT" />
+    <result column="age" property="age" jdbcType="TINYINT" />
+    <result column="usertype" property="usertype" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    
+    <collection property="rolesList" ofType="com.eqshen.model.Role">
+            <id column="roleId" property="id"/>
+            <result column="roleName" property="name"/>
+    </collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, loginname, name, password, sex, age, usertype, status, createdate, phone, email
+  </sql>
+  <sql id="exceptPassword" >
+    id, loginname, name, sex, age, usertype, status, createdate, phone, email
+  </sql>
+  
+  <select id="selectAll" resultMap="BaseResultMap" >
+        select 
+        	<include refid="Base_Column_List" />
+        from user
+    </select>
+   <select id="findUserGenById" resultMap="UserGenResultMap" parameterType="java.lang.Long">
+        SELECT
+        t.id,
+        loginname,
+        t.`name`,
+        `password`,
+        sex,
+        age,
+        usertype,
+        t.`status`,
+        t.createdate,
+        phone,
+        o.id AS roleId,
+        o.`name` AS roleName
+        FROM
+        user t
+        LEFT JOIN user_role r ON t.id = r.user_id
+        LEFT JOIN role o ON r.role_id = o.id
+        <where>
+            t.id = #{id}
+        </where>
+    </select>
+    
+   
+   <select id="findUserGenByLoginName" resultMap="UserGenResultMap" parameterType="java.lang.String">
+        SELECT
+        t.id,
+        loginname,
+        t.`name`,
+        `password`,
+        sex,
+        age,
+        usertype,
+        t.`status`,
+        t.createdate,
+        phone,
+        o.id AS roleId,
+        o.`name` AS roleName
+        FROM
+        user t
+        LEFT JOIN user_role r ON t.id = r.user_id
+        LEFT JOIN role o ON r.role_id = o.id
+        <where>
+            t.loginname = #{loginname}
+        </where>
+    </select>
+  
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByLoginName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where loginname = #{loginname,jdbcType=VARCHAR}
+  </select>
+  
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.eqshen.model.User" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (loginname, name, password, 
+      sex, age, usertype, 
+      status, createdate, phone, 
+      email)
+    values (#{loginname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=TINYINT}, #{age,jdbcType=TINYINT}, #{usertype,jdbcType=TINYINT}, 
+      #{status,jdbcType=TINYINT}, #{createdate,jdbcType=TIMESTAMP}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.eqshen.model.User" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="loginname != null" >
+        loginname,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="usertype != null" >
+        usertype,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="loginname != null" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=TINYINT},
+      </if>
+      <if test="usertype != null" >
+        #{usertype,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.eqshen.model.User" >
+    update user
+    <set >
+      <if test="loginname != null" >
+        loginname = #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=TINYINT},
+      </if>
+      <if test="usertype != null" >
+        usertype = #{usertype,jdbcType=TINYINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.eqshen.model.User" >
+    update user
+    set loginname = #{loginname,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=TINYINT},
+      age = #{age,jdbcType=TINYINT},
+      usertype = #{usertype,jdbcType=TINYINT},
+      status = #{status,jdbcType=TINYINT},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateUserPwdById" >
+    update user
+    set 
+      password = #{pwd,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

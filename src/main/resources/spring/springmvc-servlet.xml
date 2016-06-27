@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc 
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.eqshen.controller"/>
+
+    <!-- 启用CGliB -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+	
+	
+    <!-- 配置结果页面 前缀和后缀 -->
+     
+    
+    <bean id="jspViewResolver1" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order" value="2"></property>
+        <property name="prefix" value="/WEB-INF/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+   
+
+    <!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
+    <!-- 需要在shiro中添加相关配置 ，否则静态资源依然会被shiro拦截-->
+    <mvc:resources mapping="/bootstrap/**" location="/static/bootstrap/" cache-period="1"/>
+    <mvc:resources mapping="/content/**" location="/super-ui/content/" cache-period="1"/><!-- 31556926 -->
+    <mvc:resources mapping="/favicon.ico" location="/wmanage/static/style/images/favicon.ico" cache-period="31556926"/>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="false">
+            <!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <ref bean="jacksonMessageConverter" />
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/html;charset=UTF-8</value>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+        <property name="objectMapper" ref="objectMapper" />
+    </bean>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="timeZone">
+            <bean class="java.util.TimeZone" factory-method="getTimeZone" >
+                <constructor-arg value="GMT+08"/>
+            </bean>
+        </property>
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件总大小限制 -->
+        <property name="maxUploadSize" value="10000000"></property>
+    </bean>
+    
+    <!-- 配置aop日志 -->
+    <bean id="controllerLogAspect" class="com.eqshen.aop.ControllerLogAspect"></bean>
+   <aop:config>
+       <aop:aspect id="controllerLogAspect" ref="controllerLogAspect" order="2">
+           <aop:around pointcut="execution(* com.eqshen.controller.*.*(..))" method="aroundCheck"></aop:around>
+       </aop:aspect>
+   </aop:config>
+    
+
+</beans>
