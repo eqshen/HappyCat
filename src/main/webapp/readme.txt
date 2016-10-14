@@ -1,4 +1,8 @@
+
 项目采用spring+springMVC+mybatis+shiro架构
+日志log4j
+项目管理Maven
+
 其中
 1.shiro使用注意
 	shiro采用独立的session及校验机制，自定义ShiroDbRealm完成登录的认证和权限的校验。
@@ -23,3 +27,9 @@
 
 
 3.分页插件使用pagehelper
+http://git.oschina.net/free/Mybatis_PageHelper
+
+
+
+4.数据源：阿里巴巴druid
+http://www.oschina.net/p/druid

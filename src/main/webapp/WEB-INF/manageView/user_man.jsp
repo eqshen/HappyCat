@@ -11,8 +11,9 @@
 	var userid=<shiro:principal property="id"/>;
 	var cuarrentPageNumber = 1;
 	var totalPage;
-	var eachPageSize = 1;
-
+	var eachPageSize = 3;
+	var managed_userid=0;
+	
 	$(document).ready(function() {
 				var page1 = $($($("#splitPage").children()[0]).children()[1])
 						.children();
@@ -133,7 +134,7 @@
 		if(lst.length>0){
 			var tr=$("<tr></tr>");
 			for(var key in lst[0] ){
-				if(key=='password'){
+				if(key=='password' ||key=='icon'){
 					continue;
 				}
 				$(tr).append("<th>"+key+"</th>");
@@ -145,14 +146,14 @@
 		for(var i=0;i<lst.length;i++){
 			var tr=$("<tr></tr>");
 			for(var key in lst[i] ){
-				if(key=='password'){
+				if(key=='password' ||key=='icon'){
 					continue;
 				}
 				$(tr).append("<td>"+lst[i][key]+"</td>");
 				//alert(lst[i][key]);
 			}
 			$(tr).append("<td><a data-toggle='modal' onclick='edit(this)' href='#edit'>编辑</a></td>");
-			$(tr).append("<td><a data-toggle='modal' onclick='openManage()' href='javascript:void(0)'>管理</a></td>");
+			$(tr).append("<td><a data-toggle='modal' onclick='openManage(this)' href='javascript:void(0)'>管理</a></td>");
 			$("#userInfoTb tbody").append(tr);
 		}
 	}
@@ -241,7 +242,10 @@
 		});
 		
 	}
-	function openManage(){
+	function openManage(obj){
+		var tr=$(obj).parent().parent();
+		managed_userid=$($(tr).children()[0]).html();
+		//alert(managed_userid);
 		loadAllRole();
 		$("#manage").modal('show');
 	}
@@ -275,9 +279,13 @@
 		});
 		return result;
 	}
+	
+	
+	
+	
 	function loadAllRole(){
 		sdata={};
-		sdata['id']=userid;
+		sdata['id']=managed_userid;
 		//alert(JSON.stringify(sdata));
 		//return;
 		var resList=
@@ -288,17 +296,51 @@
 			var list=data.obj;
 			$("#roleCheck").empty();
 			for(var i=0;i<list.length;i++){
+				$("#roleCheck").append(list[i].name+':<input name="role" data-id="'+list[i].id+'" onclick="check(this)" type="checkbox" value="'+list[i].id+'" />&nbsp;&nbsp;&nbsp;');
+			}
+			
+			var nlist=$("#roleCheck").children("input");
+			for(var i=0;i<nlist.length;i++){
 				for(var j=0;j<resList.length;j++){
-					if(list[i].id== resList[j].id){
-						$("#roleCheck").append(list[i].name+':<input name="role" type="checkbox" checked="checked" value="'+list[i].id+'" />&nbsp;&nbsp;&nbsp;');
-					}else{
-						$("#roleCheck").append(list[i].name+':<input name="role" type="checkbox" value="'+list[i].id+'" />&nbsp;&nbsp;&nbsp;');
-					}
+					console.log($(nlist[i]).attr("data-id")+"    "+resList[j].id);
+					if($(nlist[i]).attr("data-id")== resList[j].id){
+						$(nlist[i]).attr("checked","checked");
+					}		
+					
 				}
 			}
+			
+			
+			//123
+			//12
+			
 		});
 	}
-	
+	function check(obj){
+		//$(obj).prop("checked",true);
+		if($(obj).attr("checked")=="checked"){
+			$(obj).removeAttr("checked");
+		}else{
+			$(obj).attr("checked","checked");
+		}
+	}
+	function saveUserRole(){
+		user_id=managed_userid;
+		var list=$("#roleCheck").children("input[checked=checked]");
+		//alert(list.length);
+		var value="";
+		for (var i=0;i<list.length;i++){
+			value+=$(list[i]).val();
+			value+="-";
+		}
+		var url="${base}/user/saveUserRole";
+		data={userid:user_id,value:value}
+		ajaxCommon(url, data, function(data){
+			alert(data.msg);
+			showMsg(data.msg);
+			$('#manage').modal('hide');
+		});
+	}
 	
 </script>
 </head>
@@ -337,7 +379,7 @@
 						</a></li>
 						<li><a href="javascript:;" onclick="getPageInfo(this)"> 1
 						</a></li>
-						<!-- <li>
+						 <li>
 	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 2 </a>
 	                                        </li>
 	                                        <li >
@@ -350,7 +392,7 @@
 	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 5 </a>
 	                                        </li>
 	                                        <li>
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 6 </a> -->
+	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 6 </a>
 						</li>
 						<li id="nextPage" onclick="nextPages()"><a
 							href="javascript:;"> <i class="fa fa-angle-right"></i>
@@ -405,7 +447,7 @@
 				<div class="modal-footer">
 					<button id="" type="button" class="btn dark btn-outline"
 						data-dismiss="modal">关闭</button>
-					<button type="button" onclick="save()" class="btn green">保存</button>
+					<button type="button" onclick="saveUserRole()" class="btn green">保存</button>
 				</div>
 	    </div>
 	  </div>

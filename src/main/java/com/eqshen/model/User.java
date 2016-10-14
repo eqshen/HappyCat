@@ -4,29 +4,31 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class User implements Serializable {
-    private Long id;
+    protected Long id;
 
-    private String loginname;
+    protected String loginname;
 
-    private String name;
+    protected String name;
 
-    private String password;
+    protected String password;
 
-    private Byte sex;
+    protected Byte sex;
 
-    private Byte age;
+    protected Byte age;
 
-    private Byte usertype;
+    protected Byte usertype;
 
-    private Byte status;
+    protected Byte status;
 
-    private Date createdate;
+    protected Date createdate;
 
-    private String phone;
+    protected String phone;
 
-    private String email;
+    protected String email;
 
-    private static final long serialVersionUID = 1L;
+    protected String icon;
+
+    protected static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -116,6 +118,14 @@ public class User implements Serializable {
         this.email = email == null ? null : email.trim();
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon == null ? null : icon.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -133,6 +143,7 @@ public class User implements Serializable {
         sb.append(", createdate=").append(createdate);
         sb.append(", phone=").append(phone);
         sb.append(", email=").append(email);
+        sb.append(", icon=").append(icon);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -6,6 +6,7 @@ import org.apache.shiro.subject.Subject;
 import org.aspectj.lang.ProceedingJoinPoint;
 
 import com.eqshen.bean.ShiroUser;
+import com.eqshen.model.User;
 
 public class ControllerLogAspect {
 	private static Logger log = Logger.getLogger(ControllerLogAspect.class);
@@ -13,7 +14,7 @@ public class ControllerLogAspect {
 	public Object aroundCheck(ProceedingJoinPoint jp){
 		Subject currentUser=SecurityUtils.getSubject();
 		String username=null;
-		username=(currentUser==null||currentUser.getPrincipal()==null?"匿名":((ShiroUser)currentUser.getPrincipal()).getLoginName());
+		username=(currentUser==null||currentUser.getPrincipal()==null ?"匿名":((ShiroUser)currentUser.getPrincipal()).getLoginName());
 		
 		//获取类名
 		String className=jp.getTarget().getClass().getSimpleName();

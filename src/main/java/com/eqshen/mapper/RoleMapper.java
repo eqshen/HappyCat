@@ -20,5 +20,6 @@ public interface RoleMapper {
     
     List<Map<Long, String>> findRoleResourceListByRoleId(Long id);
     
+    
     List<Role> selectAll();
 }

@@ -14,6 +14,7 @@ import com.eqshen.bean.UserGen;
 import com.eqshen.mapper.UserMapper;
 import com.eqshen.model.Resource;
 import com.eqshen.model.User;
+import com.eqshen.model.UserRole;
 import com.eqshen.service.IUserService;
 import com.github.pagehelper.PageInfo;
 
@@ -53,8 +54,32 @@ public class UserController extends BaseController {
 	@RequestMapping("/findUserRoleByUserId")
 	@ResponseBody
 	public Object  getRoleByUserId(Long id){
-		System.out.println(id);
 		UserGen ug=userService.findUserGenById(id);
 		return renderSuccess(ug.getRolesList());
 	}
+	
+	
+	@RequestMapping("/saveUserRole")
+	@ResponseBody
+	public Object saveUserRole(Long userid,String value){
+		String values[]=value.split("-");
+		List<UserRole> list=null;
+		int count=userService.removeUserRoleByUserId(userid);
+		for(String str : values){
+//			list=userService.findUserRoleByUserIdAndRoleId(userid, Long.parseLong(str));
+//			if(list.size()>=1){
+//				continue;
+//			}else{
+				UserRole ur=new UserRole();
+				ur.setUserId(userid);
+				ur.setRoleId(Long.parseLong(str));
+				userService.addUserRole(ur);
+//			}
+		}
+		return renderSuccess("±£´æ³É¹¦");
+	}
+	
+	
+	
+	
 }

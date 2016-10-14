@@ -38,11 +38,16 @@
         
         <property name="filterChainDefinitions">
             <value><!-- 拦截器按照由上至下的顺序执行 -->
+               	/== anon
+               	/Anno/** =anon
+               	/index== anon
                	/commons/** = anon <!-- 不需要认证, anno和authc分别代表不同的shiro拦截器-->
                 /content/** = anon
                 /bootstrap/** = anon
+                /static/** = anon
                 /durid/** = anon
                 /login = anon
+                /logout=anon
                 /unauth = anon <!-- 此处必须加，否则会因为用户自定义拦截器导致循环redirct,此项目具有此特征，其他项目自行判断 -->
                 /** = authc <!-- 需要认证 -->
                 /** = url_eqshen   <!-- 用户自定义拦截器，对url进行权限检查-->

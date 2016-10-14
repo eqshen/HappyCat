@@ -56,7 +56,7 @@
                enableSelectByExample="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        
+        -->
         <table schema="happycat" tableName="user" domainObjectName="User"
                enableCountByExample="false"
                enableDeleteByExample="false"
@@ -65,7 +65,7 @@
                enableSelectByExample="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        
+        <!--  
         <table schema="happycat" tableName="resource" domainObjectName="Resource"
                enableCountByExample="false"
                enableDeleteByExample="false"
@@ -101,7 +101,7 @@
                enableSelectByExample="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        -->
+        
         
         <table schema="happycat" tableName="joke" domainObjectName="Joke"
                enableCountByExample="false"
@@ -110,7 +110,7 @@
                selectByExampleQueryId="false"
                enableSelectByExample="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+        </table>-->
     </context>
 </generatorConfiguration>
 

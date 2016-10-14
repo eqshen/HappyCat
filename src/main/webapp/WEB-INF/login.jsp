@@ -76,8 +76,7 @@
 <body>
     <div id="loginbox">
         <div class="control-group normal_text">
-            <h2 style="color:#B2DFEE;font-size:28px;">SuperUI前端开发框架</h2>
-            <span style="font-size:14px;color:gray;">版权所有 &copy;tzhsweet 2015-2018</span>
+            <h2 style="color:#B2DFEE;font-size:28px;">HappyCat 登录</h2>
         </div>
         <form id="loginform" class="form-vertical" method="POST" action="${base}/login">
             <div class="control-group">
@@ -103,7 +102,7 @@
             
             
             <div class="control-group normal_text">
-                <div style="font-size:14px;color:gray;word-wrap:break-word;">版权所有 &copy;tzhsweet 2015-2018&nbsp;&nbsp;&nbsp;&nbsp;   粤ICP备16024545号-1</div>
+               
             </div>
         </form>
 

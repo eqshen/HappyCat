@@ -11,4 +11,4 @@
 <!-- <c:set var='path' value="${base}" /><!-- http://localhost:8080/HappyCat -->
 <%--静态文件目录 --%>
 <c:set var="staticPath" value="${base}/wmanage" />
-
+<c:set var="userHeadPic" value="${base}/static/img/user" />

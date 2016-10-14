@@ -32,6 +32,7 @@
     <!-- 配置哪些是静态资源，缺省Servlet 直接返回 -->
     <!-- 需要在shiro中添加相关配置 ，否则静态资源依然会被shiro拦截-->
     <mvc:resources mapping="/bootstrap/**" location="/static/bootstrap/" cache-period="1"/>
+    <mvc:resources mapping="/static/**" location="/static/" cache-period="1"/>
     <mvc:resources mapping="/content/**" location="/super-ui/content/" cache-period="1"/><!-- 31556926 -->
     <mvc:resources mapping="/favicon.ico" location="/wmanage/static/style/images/favicon.ico" cache-period="31556926"/>
 

@@ -16,6 +16,14 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   
+  <select id="selectByUserAndRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from user_role
+    where user_id = #{userid,jdbcType=BIGINT}
+    and role_id=#{roleid,jdbcType=BIGINT}
+  </select>
+  
   <select id="findRoleIdListByUserId" resultType="java.lang.Long" parameterType="java.lang.Long">
     select 
     role_id AS roleId
@@ -27,6 +35,12 @@
     delete from user_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  
+  <delete id="deleteByUserId" parameterType="java.lang.Long" >
+    delete from user_role
+    where user_id = #{userid,jdbcType=BIGINT}
+  </delete>
+  
   <insert id="insert" parameterType="com.eqshen.model.UserRole" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()

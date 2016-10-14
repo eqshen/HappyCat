@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.eqshen.bean.UserGen;
 import com.eqshen.mapper.UserMapper;
+import com.eqshen.mapper.UserRoleMapper;
+import com.eqshen.model.Role;
 import com.eqshen.model.User;
+import com.eqshen.model.UserRole;
 import com.eqshen.service.IUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +23,8 @@ import com.github.pagehelper.PageInfo;
 public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private UserRoleMapper userRoleMapper;
 	
 	public User findUserByLoginName(String username) {
 		
@@ -62,5 +67,22 @@ public class UserServiceImpl implements IUserService {
 
 	public void deleteUserById(Long id) {
 		userMapper.deleteByPrimaryKey(id);
+	}
+
+	public List<Role> findRoleListById(Long id) {
+		return userMapper.findRoleListById(id);
+	}
+
+	public List<UserRole> findUserRoleByUserIdAndRoleId(Long userid, Long roleid) {
+		return userRoleMapper.selectByUserAndRoleId(userid, roleid);
+	}
+
+	public void addUserRole(UserRole ur) {
+		userRoleMapper.insert(ur);
+	}
+
+	public int removeUserRoleByUserId(Long userid) {
+		// TODO Auto-generated method stub
+		return userRoleMapper.deleteByUserId(userid);
 	}
 }

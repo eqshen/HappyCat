@@ -1,6 +1,8 @@
 package com.eqshen.controller;
 
 
+import java.util.List;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -9,16 +11,24 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.eqshen.base.BaseController;
+import com.eqshen.bean.UserJoke;
+import com.eqshen.service.IJokeService;
+import com.eqshen.service.impl.JokeServiceImpl;
+
 
 @Controller
 public class LoginController extends BaseController {
+	@Autowired
+	private IJokeService JokeService;
 	/**
      * 首页
      *
@@ -36,8 +46,12 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping(value = "/index")
-    public String index(Model model) {
-        return "index";
+    public ModelAndView index(Model model) {
+    	ModelAndView mav=new ModelAndView();
+    	mav.setViewName("index");
+    	List<UserJoke> ls=JokeService.selectPageUserJoke(1, 5);
+    	mav.addObject("userJokeList", ls);
+    	return mav;
     }
     
     /**
@@ -48,6 +62,7 @@ public class LoginController extends BaseController {
     public String loginGet() {
         if (SecurityUtils.getSubject().isAuthenticated()) {
         	System.out.println("用户已经登陆，跳转至首页");
+        	
             return "redirect:/index";
         }
         return "login";
@@ -106,16 +121,26 @@ public class LoginController extends BaseController {
         return "redirect:/index";
     }
 
+//    /**
+//     * 退出
+//     * @return {Result}
+//     */
+//    @RequestMapping(value = "/logout")
+//    @ResponseBody
+//    public Object logout() {
+//        //logger.info("登出");
+//        Subject subject = SecurityUtils.getSubject();
+//        subject.logout();
+//        return renderSuccess();
+//    }
     /**
      * 退出
      * @return {Result}
      */
     @RequestMapping(value = "/logout")
-    @ResponseBody
-    public Object logout() {
-        //logger.info("登出");
+    public String logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return renderSuccess();
+        return "redirect:/index";
     }
 }

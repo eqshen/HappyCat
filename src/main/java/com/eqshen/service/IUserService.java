@@ -3,7 +3,9 @@ package com.eqshen.service;
 import java.util.List;
 
 import com.eqshen.bean.UserGen;
+import com.eqshen.model.Role;
 import com.eqshen.model.User;
+import com.eqshen.model.UserRole;
 import com.github.pagehelper.PageInfo;
 
 public interface IUserService {
@@ -55,6 +57,22 @@ public interface IUserService {
     UserGen findUserGenById(Long id);
     
     UserGen findUserGenByLoginName(String loginname);
+    
+    /**
+     * 根据用户id获取用户角色list
+     *
+     * @param id
+     */
+    List<Role> findRoleListById(Long id);
+    
+    /**
+     * 根据用户id和roleid获取UserRole List
+     *
+     * @param id
+     * @return List<UserRole>
+     */
+    List<UserRole> findUserRoleByUserIdAndRoleId(Long userid,Long roleid);
+    
     /**
      * 修改用户
      *
@@ -62,7 +80,26 @@ public interface IUserService {
      * @throws Exception 
      */
     void updateUser(UserGen userGen) throws Exception;
-
+    
+    
+    /**
+     * 增加userRole
+     *
+     * @param UserRole
+     * @throws Exception 
+     */
+    void addUserRole(UserRole ur);
+    
+    
+    /**
+     * 根据userid删除所有userRole
+     *
+     * @param userid
+     * @return 
+     * @throws Exception 
+     */
+    int removeUserRoleByUserId(Long userid);
+    
     /**
      * 删除用户
      *

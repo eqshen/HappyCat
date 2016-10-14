@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-    <%@ include file="/commons/global.jsp"%>
+	pageEncoding="utf-8"%>
+<%@ include file="/commons/global.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -240,68 +240,62 @@
 </head>
 <body>
 	<div class="col-md-12">
-                            
-                            <!-- BEGIN SAMPLE TABLE PORTLET-->
-                            <div class="portlet box green">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="fa fa-cogs"></i>响应式表格 </div>
-                                    <div class="tools">
-                                        <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-                                        <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                                        <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-                                        <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
-                                    </div>
-                                </div>
-                                <div class="portlet-body flip-scroll" style="display: block;">
-                                    <table id="userInfoTb" class="table table-bordered table-striped table-condensed flip-content">
-                                        <thead class="flip-content">
-                                           
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                    <!-- split page -->
-                                    <div id="splitPage">
-	                                    <ul class="pagination">
-	                                        <li id="prePage" onclick="prePage()">
-	                                            <a href="javascript:;">
-	                                                <i class="fa fa-angle-left"></i>
-	                                            </a>
-	                                        </li>
-	                                        <li>
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 1 </a>
-	                                        </li>
-	                                        <li>
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 2 </a>
-	                                        </li>
-	                                        <li >
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 3 </a>
-	                                        </li>
-	                                        <li>
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 4 </a>
-	                                        </li>
-	                                        <li>
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 5 </a>
-	                                        </li>
-	                                        <li>
-	                                            <a href="javascript:;" onclick="getPageInfo(this)"> 6 </a>
-	                                        </li>
-	                                        <li id="nextPage" onclick="nextPages()">
-	                                            <a href="javascript:;">
-	                                                <i class="fa fa-angle-right"></i>
-	                                            </a>
-	                                        </li>
-	                                    </ul>
-                                	</div>
-                                <!-- split page end -->
-                                </div>
-                            </div>
-                            <!-- END SAMPLE TABLE PORTLET-->
-                          
-                        </div>
-                        <!--support  -->
-                        <!-- /.modal -->
+
+		<!-- BEGIN SAMPLE TABLE PORTLET-->
+		<div class="portlet box green">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="fa fa-cogs"></i>响应式表格
+				</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse" data-original-title=""
+						title=""> </a> <a href="#portlet-config" data-toggle="modal"
+						class="config" data-original-title="" title=""> </a> <a
+						href="javascript:;" class="reload" data-original-title="" title="">
+					</a> <a href="javascript:;" class="remove" data-original-title=""
+						title=""> </a>
+				</div>
+			</div>
+			<div class="portlet-body flip-scroll" style="display: block;">
+				<table id="userInfoTb"
+					class="table table-bordered table-striped table-condensed flip-content">
+					<thead class="flip-content">
+
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				<!-- split page -->
+				<div id="splitPage">
+					<ul class="pagination">
+						<li id="prePage" onclick="prePage()"><a href="javascript:;">
+								<i class="fa fa-angle-left"></i>
+						</a></li>
+						<li><a href="javascript:;" onclick="getPageInfo(this)"> 1
+						</a></li>
+						<li><a href="javascript:;" onclick="getPageInfo(this)"> 2
+						</a></li>
+						<li><a href="javascript:;" onclick="getPageInfo(this)">
+								3 </a></li>
+						<li><a href="javascript:;" onclick="getPageInfo(this)"> 4
+						</a></li>
+						<li><a href="javascript:;" onclick="getPageInfo(this)"> 5
+						</a></li>
+						<li><a href="javascript:;" onclick="getPageInfo(this)"> 6
+						</a></li>
+						<li id="nextPage" onclick="nextPages()"><a
+							href="javascript:;"> <i class="fa fa-angle-right"></i>
+						</a></li>
+					</ul>
+				</div>
+				<!-- split page end -->
+			</div>
+		</div>
+		<!-- END SAMPLE TABLE PORTLET-->
+
+	</div>
+	<!--support  -->
+	<!-- /.modal -->
 	<div class="modal fade" id="edit" tabindex="-1" role="basic"
 		aria-hidden="true">
 		<div class="modal-dialog ">
@@ -313,7 +307,7 @@
 				</div>
 				<div class="modal-body">
 					<ul id="modal-table" class="list-group">
-						
+
 					</ul>
 				</div>
 				<div class="modal-footer">
@@ -326,7 +320,7 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-	<!-- /.modal -->
+
 	<!-- end modal -->
-	</body>
+</body>
 </html>

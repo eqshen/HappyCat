@@ -8,12 +8,19 @@
     <result column="type" property="type" jdbcType="VARCHAR" />
     <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="good" property="good" jdbcType="BIGINT" />
+    <result column="bad" property="bad" jdbcType="BIGINT" />
   </resultMap>
+  
+  <resultMap id="UserJokeMap" type="com.eqshen.bean.UserJoke"  extends="BaseResultMap">
+      <result column="loginname" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  
   <resultMap id="ResultMapWithBLOBs" type="com.eqshen.model.Joke" extends="BaseResultMap" >
     <result column="content" property="content" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, title, status, type, createdate, user_id
+    id, title, status, type, createdate, user_id, good, bad
   </sql>
   <sql id="Blob_Column_List" >
     content
@@ -26,6 +33,42 @@
     from joke
     where id = #{id,jdbcType=BIGINT}
   </select>
+  
+  <select id="selectUserJoke" resultMap="UserJokeMap"  >
+    SELECT 
+    j.*,user.`loginname` from joke j 
+    inner JOIN
+	`user` on `user`.id=j.user_id
+  </select>
+  
+  <select id="selectHotUserJoke" resultMap="UserJokeMap"  >
+    SELECT 
+    j.*,user.`loginname` from joke j 
+    inner JOIN
+	`user` on `user`.id=j.user_id
+	order by j.good-j.bad desc
+  </select>
+  
+  <select id="selectLatestUserJoke" resultMap="UserJokeMap"  >
+    SELECT 
+    j.*,user.`loginname` from joke j 
+    inner JOIN
+	`user` on `user`.id=j.user_id
+	order by j.createdate DESC
+  </select>
+  
+  <select id="selectRandomUserJoke" resultMap="UserJokeMap"  >
+    SELECT t1.*,`user`.loginname
+	FROM `joke` AS t1 JOIN 
+	(SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `joke`)-(SELECT MIN(id) FROM `joke`))+(SELECT MIN(id) 
+	FROM `joke`)) AS id) AS t2
+	inner JOIN `user`
+	on t1.id >= t2.id
+	and `user`.id=t1.user_id
+	ORDER BY t1.id LIMIT #{limit,jdbcType=BIGINT};
+  </select>
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     delete from joke
     where id = #{id,jdbcType=BIGINT}
@@ -35,11 +78,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into joke (title, status, type, 
-      createdate, user_id, content
-      )
+      createdate, user_id, good, 
+      bad, content)
     values (#{title,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{type,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR}
-      )
+      #{createdate,jdbcType=TIMESTAMP}, #{userId,jdbcType=BIGINT}, #{good,jdbcType=BIGINT}, 
+      #{bad,jdbcType=BIGINT}, #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.eqshen.model.Joke" >
     <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
@@ -62,6 +105,12 @@
       <if test="userId != null" >
         user_id,
       </if>
+      <if test="good != null" >
+        good,
+      </if>
+      <if test="bad != null" >
+        bad,
+      </if>
       <if test="content != null" >
         content,
       </if>
@@ -81,6 +130,12 @@
       </if>
       <if test="userId != null" >
         #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="good != null" >
+        #{good,jdbcType=BIGINT},
+      </if>
+      <if test="bad != null" >
+        #{bad,jdbcType=BIGINT},
       </if>
       <if test="content != null" >
         #{content,jdbcType=LONGVARCHAR},
@@ -105,6 +160,12 @@
       <if test="userId != null" >
         user_id = #{userId,jdbcType=BIGINT},
       </if>
+      <if test="good != null" >
+        good = #{good,jdbcType=BIGINT},
+      </if>
+      <if test="bad != null" >
+        bad = #{bad,jdbcType=BIGINT},
+      </if>
       <if test="content != null" >
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
@@ -118,6 +179,8 @@
       type = #{type,jdbcType=VARCHAR},
       createdate = #{createdate,jdbcType=TIMESTAMP},
       user_id = #{userId,jdbcType=BIGINT},
+      good = #{good,jdbcType=BIGINT},
+      bad = #{bad,jdbcType=BIGINT},
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -127,7 +190,11 @@
       status = #{status,jdbcType=TINYINT},
       type = #{type,jdbcType=VARCHAR},
       createdate = #{createdate,jdbcType=TIMESTAMP},
-      user_id = #{userId,jdbcType=BIGINT}
+      user_id = #{userId,jdbcType=BIGINT},
+      good = #{good,jdbcType=BIGINT},
+      bad = #{bad,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  
+  
 </mapper>

@@ -3,10 +3,11 @@ package com.eqshen.mapper;
 import java.util.List;
 
 import com.eqshen.bean.UserGen;
+import com.eqshen.model.Role;
 import com.eqshen.model.User;
 
 public interface UserMapper {
-    int deleteByPrimaryKey(Long id);
+	int deleteByPrimaryKey(Long id);
 
     int insert(User record);
 
@@ -26,6 +27,8 @@ public interface UserMapper {
     UserGen findUserGenById(Long id);
     
     UserGen findUserGenByLoginName(String loginname);
+    
+    List<Role> findRoleListById(Long id);
     
     List<User> selectAll();
 }

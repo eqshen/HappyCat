@@ -4,21 +4,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Joke implements Serializable {
-    private Long id;
+    protected Long id;
 
-    private String title;
+    protected String title;
 
-    private Byte status;
+    protected Byte status;
 
-    private String type;
+    protected String type;
 
-    private Date createdate;
+    protected Date createdate;
 
-    private Long userId;
+    protected Long userId;
 
-    private String content;
+    protected Long good;
 
-    private static final long serialVersionUID = 1L;
+    protected Long bad;
+
+    protected String content;
+
+    protected static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;
@@ -68,6 +72,22 @@ public class Joke implements Serializable {
         this.userId = userId;
     }
 
+    public Long getGood() {
+        return good;
+    }
+
+    public void setGood(Long good) {
+        this.good = good;
+    }
+
+    public Long getBad() {
+        return bad;
+    }
+
+    public void setBad(Long bad) {
+        this.bad = bad;
+    }
+
     public String getContent() {
         return content;
     }
@@ -88,6 +108,8 @@ public class Joke implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", createdate=").append(createdate);
         sb.append(", userId=").append(userId);
+        sb.append(", good=").append(good);
+        sb.append(", bad=").append(bad);
         sb.append(", content=").append(content);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
